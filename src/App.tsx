@@ -23,7 +23,7 @@ const App = () => {
       </div>
 
       <footer className="flex justify-center">
-        <img src={bee} width="48" height="48" />
+        <img src={bee} alt="" width="48" height="48" />
       </footer>
     </div>
   );

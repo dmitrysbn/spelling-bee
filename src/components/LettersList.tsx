@@ -1,7 +1,20 @@
-import refresh from '../images/refresh.svg';
-import Button from '@mui/material/Button';
 import LetterButton from './LetterButton';
 import { useState } from 'react';
+import ControlButtons from './ControlButtons';
+
+const randomizeLetters = (
+  lettersArray: string[],
+  mainLetter: string
+): string[] => {
+  const nonMainLetters = lettersArray.filter(letter => letter !== mainLetter);
+
+  const sorted = nonMainLetters.sort(() => {
+    return 0.5 - Math.random();
+  });
+  sorted.splice(4, 0, mainLetter);
+
+  return sorted;
+};
 
 const LettersList = ({
   puzzle,
@@ -11,25 +24,26 @@ const LettersList = ({
   mainLetter: string;
 }) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
+  const [loading, setLoading] = useState(false);
 
   // TODO: make sure no letters are in their old positions
   const handleRefresh = () => {
-    const nonMainLetters = lettersArray.filter(letter => letter !== mainLetter);
+    if (loading) {
+      return;
+    }
 
-    const sorted = nonMainLetters.sort(() => {
-      return 0.5 - Math.random();
-    });
-    sorted.splice(4, 0, mainLetter);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
 
+    const sorted = randomizeLetters(lettersArray, mainLetter);
     setLettersArray(sorted);
   };
 
-  const lettersList = lettersArray.map((letter: string) => {
-    if (letter === mainLetter) {
-      return <LetterButton key={letter} letter={letter} main={true} />;
-    }
-    return <LetterButton key={letter} letter={letter} />;
-  });
+  const lettersList = lettersArray.map((letter: string) => (
+    <LetterButton key={letter} letter={letter} main={letter === mainLetter} />
+  ));
 
   return (
     <div className="container flex flex-col items-center border-solid border-2">
@@ -37,27 +51,7 @@ const LettersList = ({
         {lettersList}
       </div>
 
-      <div className="justify-center my-10 flex flex-row space-x-4">
-        <div>
-          <Button variant="contained" sx={{ fontWeight: 'bold' }}>
-            Delete
-          </Button>
-        </div>
-        <div>
-          <Button
-            variant="outlined"
-            sx={{ fontWeight: 'bold' }}
-            onClick={handleRefresh}
-          >
-            <img src={refresh} width="26" />
-          </Button>
-        </div>
-        <div>
-          <Button variant="contained" sx={{ fontWeight: 'bold' }}>
-            Enter
-          </Button>
-        </div>
-      </div>
+      <ControlButtons onRefresh={handleRefresh} />
     </div>
   );
 };
