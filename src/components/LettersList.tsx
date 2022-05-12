@@ -4,13 +4,15 @@ import ControlButtons from './ControlButtons';
 import { randomizeLetters } from '../utils/utils';
 
 const LettersList = ({
-  onClick,
   puzzle,
   mainLetter,
+  onClick,
+  onSubmit,
 }: {
-  onClick: (event: BaseSyntheticEvent, letter: string) => void;
   puzzle: string;
   mainLetter: string;
+  onClick: (event: BaseSyntheticEvent, letter: string) => void;
+  onSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
   const [loading, setLoading] = useState(false);
@@ -45,7 +47,7 @@ const LettersList = ({
         {lettersList}
       </div>
 
-      <ControlButtons onRefresh={handleRefresh} />
+      <ControlButtons onRefresh={handleRefresh} onSubmit={onSubmit} />
     </div>
   );
 };

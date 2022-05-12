@@ -1,7 +1,13 @@
 import refresh from '../images/refresh.svg';
 import Button from '@mui/material/Button';
 
-const ControlButtons = ({ onRefresh }: { onRefresh: () => void }) => {
+const ControlButtons = ({
+  onRefresh,
+  onSubmit,
+}: {
+  onRefresh: () => void;
+  onSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) => {
   return (
     <div className="justify-center my-10 flex flex-row space-x-4">
       <div>
@@ -21,7 +27,11 @@ const ControlButtons = ({ onRefresh }: { onRefresh: () => void }) => {
       </div>
 
       <div>
-        <Button variant="contained" sx={{ fontWeight: 'bold' }}>
+        <Button
+          onClick={onSubmit}
+          variant="contained"
+          sx={{ fontWeight: 'bold' }}
+        >
           Enter
         </Button>
       </div>

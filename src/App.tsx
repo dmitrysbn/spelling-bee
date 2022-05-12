@@ -14,7 +14,9 @@ const App = () => {
   const [term, setTerm] = useState('');
   const [foundWords, setFoundWords] = useState<string[]>([]);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (
+    event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
 
     setTerm('');
@@ -48,6 +50,7 @@ const App = () => {
       <div className="container flex flex-row gap-5 mt-6">
         <LettersList
           onClick={onChange}
+          onSubmit={onSubmit}
           puzzle={puzzle}
           mainLetter={mainLetter}
         />
