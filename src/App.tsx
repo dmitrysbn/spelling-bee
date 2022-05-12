@@ -13,9 +13,9 @@ const App = () => {
     <div className="flex flex-col justify-between h-screen">
       <Header />
 
-      {/* <div>
+      <div>
         <FormPropsTextFields />
-      </div> */}
+      </div>
 
       <div className="container flex flex-row gap-5 mt-6">
         <LettersList puzzle={puzzle} mainLetter={mainLetter} />

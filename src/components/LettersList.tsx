@@ -16,11 +16,10 @@ const LettersList = ({
   const handleRefresh = () => {
     const nonMainLetters = lettersArray.filter(letter => letter !== mainLetter);
 
-    const sorted = nonMainLetters
-      .sort(() => {
-        return 0.5 - Math.random();
-      })
-      .splice(4, 0, mainLetter);
+    const sorted = nonMainLetters.sort(() => {
+      return 0.5 - Math.random();
+    });
+    sorted.splice(4, 0, mainLetter);
 
     setLettersArray(sorted);
   };
