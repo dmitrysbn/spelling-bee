@@ -1,20 +1,7 @@
 import LetterButton from './LetterButton';
 import { useState } from 'react';
 import ControlButtons from './ControlButtons';
-
-const randomizeLetters = (
-  lettersArray: string[],
-  mainLetter: string
-): string[] => {
-  const nonMainLetters = lettersArray.filter(letter => letter !== mainLetter);
-
-  const sorted = nonMainLetters.sort(() => {
-    return 0.5 - Math.random();
-  });
-  sorted.splice(4, 0, mainLetter);
-
-  return sorted;
-};
+import { randomizeLetters } from '../utils/utils';
 
 const LettersList = ({
   puzzle,
@@ -46,7 +33,7 @@ const LettersList = ({
   ));
 
   return (
-    <div className="container flex flex-col items-center border-solid border-2">
+    <div className="container flex flex-col items-center">
       <div className="grid grid-cols-3 gap-5 mt-10 items-stretch text-center justify-items-center">
         {lettersList}
       </div>
