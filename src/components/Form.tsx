@@ -1,25 +1,27 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function Form() {
+const Form = ({
+  term,
+  setTerm,
+  onSubmit,
+}: {
+  term: string;
+  setTerm: Dispatch<SetStateAction<string>>;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}) => {
+  const onChange = (event: { target: { value: SetStateAction<string> } }) => {
+    setTerm(event.target.value);
+  };
+
   return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
+    <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
       <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Hello World"
-        />
+        <TextField value={term} onChange={onChange} id="standard-basic" />
       </div>
     </Box>
   );
-}
+};
+
+export default Form;
