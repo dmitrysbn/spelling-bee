@@ -1,5 +1,5 @@
 import LetterButton from './LetterButton';
-import { BaseSyntheticEvent, SetStateAction, useState } from 'react';
+import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import ControlButtons from './ControlButtons';
 import { randomizeLetters } from '../utils/utils';
 
@@ -16,6 +16,11 @@ const LettersList = ({
 }) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const sorted = randomizeLetters(puzzle.split(''), mainLetter);
+    setLettersArray(sorted);
+  }, [puzzle, mainLetter]);
 
   // TODO: make sure no letters are in their old positions
   const handleRefresh = () => {

@@ -10,9 +10,12 @@ import { legalWords } from './utils/legalWords';
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
 
+const storedWordsString = localStorage.getItem('foundWords') || '';
+const storedWords = JSON.parse(storedWordsString);
+
 const App = () => {
   const [term, setTerm] = useState('');
-  const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [foundWords, setFoundWords] = useState<string[]>(storedWords);
 
   const onSubmit = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
@@ -27,6 +30,7 @@ const App = () => {
 
     foundWords.push(term);
 
+    localStorage.setItem('foundWords', JSON.stringify(foundWords));
     setFoundWords(foundWords);
   };
 
