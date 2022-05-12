@@ -1,20 +1,16 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Dispatch, SetStateAction } from 'react';
+import { BaseSyntheticEvent } from 'react';
 
 const Form = ({
   term,
-  setTerm,
+  onChange,
   onSubmit,
 }: {
   term: string;
-  setTerm: Dispatch<SetStateAction<string>>;
+  onChange: (event: BaseSyntheticEvent, letter?: string) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }) => {
-  const onChange = (event: { target: { value: SetStateAction<string> } }) => {
-    setTerm(event.target.value);
-  };
-
   return (
     <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
       <div>

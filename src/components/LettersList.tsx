@@ -1,12 +1,14 @@
 import LetterButton from './LetterButton';
-import { useState } from 'react';
+import { BaseSyntheticEvent, SetStateAction, useState } from 'react';
 import ControlButtons from './ControlButtons';
 import { randomizeLetters } from '../utils/utils';
 
 const LettersList = ({
+  onClick,
   puzzle,
   mainLetter,
 }: {
+  onClick: (event: BaseSyntheticEvent, letter: string) => void;
   puzzle: string;
   mainLetter: string;
 }) => {
@@ -29,7 +31,12 @@ const LettersList = ({
   };
 
   const lettersList = lettersArray.map((letter: string) => (
-    <LetterButton key={letter} letter={letter} main={letter === mainLetter} />
+    <LetterButton
+      key={letter}
+      letter={letter}
+      main={letter === mainLetter}
+      onClick={onClick}
+    />
   ));
 
   return (
