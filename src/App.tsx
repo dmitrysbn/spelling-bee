@@ -5,6 +5,7 @@ import LettersList from './components/LettersList';
 import Form from './components/Form';
 import FoundWords from './components/FoundWords';
 import { BaseSyntheticEvent, FormEvent, useState } from 'react';
+import { legalWords } from './utils/legalWords';
 
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
@@ -15,18 +16,24 @@ const App = () => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    foundWords.push(term);
 
     setTerm('');
+
+    if (!legalWords.includes(term.toLowerCase())) {
+      return;
+    }
+
+    foundWords.push(term);
+
     setFoundWords(foundWords);
   };
 
   const onChange = (event: BaseSyntheticEvent, letter?: string) => {
     if (event.type === 'change') {
-      setTerm(event.target.value);
+      setTerm(event.target.value.toUpperCase());
     } else if (event.type === 'click') {
       const newTerm = letter ? term + letter : term;
-      setTerm(newTerm);
+      setTerm(newTerm.toUpperCase());
     }
   };
 
