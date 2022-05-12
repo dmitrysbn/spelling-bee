@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import bee from './images/bee.png';
 import './App.css';
+import Header from './components/Header';
+import LettersList from './components/LettersList';
+import FormPropsTextFields from './components/Form';
+import FoundWords from './components/FoundWords';
 
-function App() {
+const puzzle = 'HOCIGEDNT';
+const mainLetter = 'G';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex flex-col justify-between h-screen">
+      <Header />
+
+      {/* <div>
+        <FormPropsTextFields />
+      </div> */}
+
+      <div className="container flex flex-row gap-5 mt-6">
+        <LettersList puzzle={puzzle} mainLetter={mainLetter} />
+        <FoundWords />
+      </div>
+
+      <footer className="flex justify-center">
+        <img src={bee} width="48" height="48" />
+      </footer>
     </div>
   );
-}
+};
 
 export default App;
