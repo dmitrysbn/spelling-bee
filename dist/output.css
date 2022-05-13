@@ -641,6 +641,10 @@ html {
   width: 100%;
 }
 
+.w-3\/6 {
+  width: 50%;
+}
+
 .flex-none {
   flex: none;
 }

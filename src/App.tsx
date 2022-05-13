@@ -28,8 +28,6 @@ const App = () => {
       return;
     }
 
-    setTerm('');
-
     const error = validateTerm({
       term,
       puzzle,
@@ -40,6 +38,10 @@ const App = () => {
 
     if (error) {
       setError(error);
+      setTimeout(() => {
+        setError('');
+        setTerm('');
+      }, 1000);
       return;
     }
 

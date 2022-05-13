@@ -16,7 +16,7 @@ const ControlButtons = ({
         <Button
           onClick={onClickDelete}
           variant="contained"
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'normal' }}
         >
           Delete
         </Button>
@@ -25,7 +25,7 @@ const ControlButtons = ({
       <div>
         <Button
           variant="outlined"
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'normal' }}
           onClick={onRefresh}
         >
           <img src={refresh} alt="" width="26" />
@@ -36,7 +36,7 @@ const ControlButtons = ({
         <Button
           onClick={onSubmit}
           variant="contained"
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'normal' }}
         >
           Enter
         </Button>
