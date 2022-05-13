@@ -4,11 +4,17 @@ import Header from './components/Header';
 import LettersList from './components/LettersList';
 import Form from './components/Form';
 import FoundWords from './components/FoundWords';
-import { BaseSyntheticEvent, FormEvent, useState } from 'react';
+import {
+  BaseSyntheticEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 
-const puzzle = 'HOCIGED';
+const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
 
 const storedWordsString = localStorage.getItem('foundWords');
@@ -18,6 +24,21 @@ const App = () => {
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
   const [foundWords, setFoundWords] = useState<string[]>(storedWords);
+
+  const inputRef = useRef(document.createElement('div'));
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [error]);
+
+  const focusInput = () => {
+    console.log('focus');
+    console.log(inputRef);
+
+    inputRef.current.focus();
+  };
 
   const onSubmit = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
@@ -66,43 +87,46 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between h-screen">
-      <Header />
+    <div className="w-screen" onClick={focusInput}>
+      <div className="flex flex-col justify-between h-screen">
+        <Header />
 
-      <div className="flex justify-center h-1/6">
-        <div className="flex flex-col justify-end">
-          <div className="text-center align-bottom mb-5">{error}</div>
-          <div className="sticky bottom-0">
-            <Form
-              term={term}
-              disabled={!!error}
-              onChange={onChange}
-              onSubmit={onSubmit}
-            />
+        <div className="flex justify-center h-1/6">
+          <div className="flex flex-col justify-end">
+            <div className="text-center align-bottom mb-5">{error}</div>
+            <div className="sticky bottom-0">
+              <Form
+                ref={inputRef}
+                term={term}
+                disabled={!!error}
+                onChange={onChange}
+                onSubmit={onSubmit}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="container flex flex-row justify-center gap-5 mt-6">
-        <LettersList
-          onClick={onChange}
-          onSubmit={onSubmit}
-          onClickDelete={onClickDelete}
-          puzzle={puzzle}
-          mainLetter={mainLetter}
-        />
-        <FoundWords foundWords={foundWords} />
-      </div>
+        <div className="container flex flex-row justify-center gap-5 mt-6">
+          <LettersList
+            onClick={onChange}
+            onSubmit={onSubmit}
+            onClickDelete={onClickDelete}
+            puzzle={puzzle}
+            mainLetter={mainLetter}
+          />
+          <FoundWords foundWords={foundWords} />
+        </div>
 
-      <footer className="flex justify-center">
-        <a
-          href="https://github.com/dmitrysbn/spelling-bee"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img src={bee} alt="" width="48" height="48" />
-        </a>
-      </footer>
+        <footer className="flex justify-center">
+          <a
+            href="https://github.com/dmitrysbn/spelling-bee"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src={bee} alt="" width="48" height="48" />
+          </a>
+        </footer>
+      </div>
     </div>
   );
 };
