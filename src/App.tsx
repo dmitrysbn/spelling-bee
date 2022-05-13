@@ -1,4 +1,4 @@
-import bee from './images/bee.png';
+import bee from './images/bee_white.png';
 import './App.css';
 import Header from './components/Header';
 import LettersList from './components/LettersList';
@@ -6,6 +6,7 @@ import Form from './components/Form';
 import FoundWords from './components/FoundWords';
 import { BaseSyntheticEvent, FormEvent, useState } from 'react';
 import { legalWords } from './utils/legalWords';
+import { validateTerm } from './utils/validateTerm';
 
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
@@ -15,16 +16,30 @@ const storedWords = storedWordsString ? JSON.parse(storedWordsString) : [];
 
 const App = () => {
   const [term, setTerm] = useState('');
+  const [error, setError] = useState('');
   const [foundWords, setFoundWords] = useState<string[]>(storedWords);
 
-  const onClickEnter = (
+  const onSubmit = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
 
+    if (!term) {
+      return;
+    }
+
     setTerm('');
 
-    if (!legalWords.includes(term.toLowerCase()) || foundWords.includes(term)) {
+    const error = validateTerm({
+      term,
+      puzzle,
+      legalWords,
+      mainLetter,
+      foundWords,
+    });
+
+    if (error) {
+      setError(error);
       return;
     }
 
@@ -52,14 +67,19 @@ const App = () => {
     <div className="flex flex-col justify-between h-screen">
       <Header />
 
-      <div className="flex justify-center">
-        <Form term={term} onChange={onChange} onClickEnter={onClickEnter} />
+      <div className="flex justify-center h-1/6">
+        <div className="flex flex-col justify-end">
+          <div className="text-center align-bottom mb-5">{error}</div>
+          <div className="sticky bottom-0">
+            <Form term={term} onChange={onChange} onSubmit={onSubmit} />
+          </div>
+        </div>
       </div>
 
       <div className="container flex flex-row gap-5 mt-6">
         <LettersList
           onClick={onChange}
-          onClickEnter={onClickEnter}
+          onSubmit={onSubmit}
           onClickDelete={onClickDelete}
           puzzle={puzzle}
           mainLetter={mainLetter}

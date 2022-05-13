@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 
 const ControlButtons = ({
   onRefresh,
-  onClickEnter,
+  onSubmit,
   onClickDelete,
 }: {
   onRefresh: () => void;
-  onClickEnter: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   return (
@@ -34,7 +34,7 @@ const ControlButtons = ({
 
       <div>
         <Button
-          onClick={onClickEnter}
+          onClick={onSubmit}
           variant="contained"
           sx={{ fontWeight: 'bold' }}
         >

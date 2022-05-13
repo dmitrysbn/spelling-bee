@@ -1,31 +1,32 @@
 import LetterButton from './LetterButton';
 import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react';
 import ControlButtons from './ControlButtons';
-import { randomizeLetters } from '../utils/utils';
+import { randomizeLetters } from '../utils/randomizeLetters';
 
 const LettersList = ({
   puzzle,
   mainLetter,
   onClick,
-  onClickEnter,
+  onSubmit,
   onClickDelete,
 }: {
   puzzle: string;
   mainLetter: string;
   onClick: (event: BaseSyntheticEvent, letter: string) => void;
-  onClickEnter: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
   const [loading, setLoading] = useState(false);
 
+  // TODO: disable functionality of press space for 1 second
   const handlePressSpace = useCallback(
     (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         // if (loading) {
         //   return;
         // }
-        console.log('space');
+        // console.log('space');
 
         // setLoading(true);
 
@@ -82,7 +83,7 @@ const LettersList = ({
 
       <ControlButtons
         onRefresh={handleRefresh}
-        onClickEnter={onClickEnter}
+        onSubmit={onSubmit}
         onClickDelete={onClickDelete}
       />
     </div>
