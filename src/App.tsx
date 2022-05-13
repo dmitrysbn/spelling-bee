@@ -8,7 +8,7 @@ import { BaseSyntheticEvent, FormEvent, useState } from 'react';
 import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 
-const puzzle = 'HOCIGEDNT';
+const puzzle = 'HOCIGED';
 const mainLetter = 'G';
 
 const storedWordsString = localStorage.getItem('foundWords');
@@ -73,7 +73,12 @@ const App = () => {
         <div className="flex flex-col justify-end">
           <div className="text-center align-bottom mb-5">{error}</div>
           <div className="sticky bottom-0">
-            <Form term={term} onChange={onChange} onSubmit={onSubmit} />
+            <Form
+              term={term}
+              disabled={!!error}
+              onChange={onChange}
+              onSubmit={onSubmit}
+            />
           </div>
         </div>
       </div>
