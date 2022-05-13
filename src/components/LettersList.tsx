@@ -1,5 +1,5 @@
 import LetterButton from './LetterButton';
-import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react';
 import ControlButtons from './ControlButtons';
 import { randomizeLetters } from '../utils/utils';
 
@@ -19,10 +19,36 @@ const LettersList = ({
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
   const [loading, setLoading] = useState(false);
 
+  const handlePressSpace = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        // if (loading) {
+        //   return;
+        // }
+        console.log('space');
+
+        // setLoading(true);
+
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 1000);
+
+        setLettersArray(prevArray => randomizeLetters(prevArray, mainLetter));
+      }
+    },
+    [mainLetter]
+  );
+
   useEffect(() => {
+    document.addEventListener('keydown', handlePressSpace);
+
     const sorted = randomizeLetters(puzzle.split(''), mainLetter);
     setLettersArray(sorted);
-  }, [puzzle, mainLetter]);
+
+    return () => {
+      document.removeEventListener('keydown', handlePressSpace);
+    };
+  }, [handlePressSpace, puzzle, mainLetter]);
 
   // TODO: make sure no letters are in their old positions
   const handleRefresh = () => {
@@ -33,7 +59,7 @@ const LettersList = ({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
 
     const sorted = randomizeLetters(lettersArray, mainLetter);
     setLettersArray(sorted);
