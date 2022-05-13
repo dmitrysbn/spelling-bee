@@ -75,10 +75,13 @@ const App = () => {
 
       const re = /^[A-Za-z]+$/;
 
-      if (re.test(value)) {
+      if (value === '' || re.test(value)) {
         setTerm(value.toUpperCase());
       }
     } else if (event.type === 'click') {
+      if (error) {
+        return;
+      }
       const newTerm = letter ? term + letter : term;
 
       setTerm(newTerm.toUpperCase());
