@@ -5,14 +5,14 @@ import { BaseSyntheticEvent } from 'react';
 const Form = ({
   term,
   onChange,
-  onSubmit,
+  onClickEnter,
 }: {
   term: string;
   onChange: (event: BaseSyntheticEvent, letter?: string) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onClickEnter: (event: React.FormEvent<HTMLFormElement>) => void;
 }) => {
   return (
-    <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+    <Box component="form" noValidate autoComplete="off" onSubmit={onClickEnter}>
       <div>
         <TextField value={term} onChange={onChange} id="standard-basic" />
       </div>

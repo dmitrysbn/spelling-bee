@@ -7,12 +7,14 @@ const LettersList = ({
   puzzle,
   mainLetter,
   onClick,
-  onSubmit,
+  onClickEnter,
+  onClickDelete,
 }: {
   puzzle: string;
   mainLetter: string;
   onClick: (event: BaseSyntheticEvent, letter: string) => void;
-  onSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClickEnter: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
   const [loading, setLoading] = useState(false);
@@ -52,7 +54,11 @@ const LettersList = ({
         {lettersList}
       </div>
 
-      <ControlButtons onRefresh={handleRefresh} onSubmit={onSubmit} />
+      <ControlButtons
+        onRefresh={handleRefresh}
+        onClickEnter={onClickEnter}
+        onClickDelete={onClickDelete}
+      />
     </div>
   );
 };

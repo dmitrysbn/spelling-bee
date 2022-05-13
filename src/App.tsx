@@ -10,21 +10,21 @@ import { legalWords } from './utils/legalWords';
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
 
-const storedWordsString = localStorage.getItem('foundWords') || '';
-const storedWords = JSON.parse(storedWordsString);
+const storedWordsString = localStorage.getItem('foundWords');
+const storedWords = storedWordsString ? JSON.parse(storedWordsString) : [];
 
 const App = () => {
   const [term, setTerm] = useState('');
   const [foundWords, setFoundWords] = useState<string[]>(storedWords);
 
-  const onSubmit = (
+  const onClickEnter = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
 
     setTerm('');
 
-    if (!legalWords.includes(term.toLowerCase())) {
+    if (!legalWords.includes(term.toLowerCase()) || foundWords.includes(term)) {
       return;
     }
 
@@ -43,18 +43,24 @@ const App = () => {
     }
   };
 
+  const onClickDelete = (event: BaseSyntheticEvent): void => {
+    const newTerm = term.slice(0, term.length - 1);
+    setTerm(newTerm.toUpperCase());
+  };
+
   return (
     <div className="flex flex-col justify-between h-screen">
       <Header />
 
       <div className="flex justify-center">
-        <Form term={term} onChange={onChange} onSubmit={onSubmit} />
+        <Form term={term} onChange={onChange} onClickEnter={onClickEnter} />
       </div>
 
       <div className="container flex flex-row gap-5 mt-6">
         <LettersList
           onClick={onChange}
-          onSubmit={onSubmit}
+          onClickEnter={onClickEnter}
+          onClickDelete={onClickDelete}
           puzzle={puzzle}
           mainLetter={mainLetter}
         />
@@ -62,7 +68,9 @@ const App = () => {
       </div>
 
       <footer className="flex justify-center">
-        <img src={bee} alt="" width="48" height="48" />
+        <a href="https://github.com/dmitrysbn/spelling-bee" target="_blank">
+          <img src={bee} alt="" width="48" height="48" />
+        </a>
       </footer>
     </div>
   );
