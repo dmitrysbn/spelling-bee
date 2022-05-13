@@ -68,7 +68,11 @@ const App = () => {
       </div>
 
       <footer className="flex justify-center">
-        <a href="https://github.com/dmitrysbn/spelling-bee" target="_blank">
+        <a
+          href="https://github.com/dmitrysbn/spelling-bee"
+          target="_blank"
+          rel="noreferrer"
+        >
           <img src={bee} alt="" width="48" height="48" />
         </a>
       </footer>
