@@ -34,9 +34,6 @@ const App = () => {
   }, [error]);
 
   const focusInput = () => {
-    console.log('focus');
-    console.log(inputRef);
-
     inputRef.current.focus();
   };
 
@@ -74,9 +71,16 @@ const App = () => {
 
   const onChange = (event: BaseSyntheticEvent, letter?: string) => {
     if (event.type === 'change') {
-      setTerm(event.target.value.toUpperCase());
+      const { value } = event.target;
+
+      const re = /^[A-Za-z]+$/;
+
+      if (re.test(value)) {
+        setTerm(value.toUpperCase());
+      }
     } else if (event.type === 'click') {
       const newTerm = letter ? term + letter : term;
+
       setTerm(newTerm.toUpperCase());
     }
   };
@@ -94,15 +98,13 @@ const App = () => {
         <div className="flex justify-center h-1/6">
           <div className="flex flex-col justify-end">
             <div className="text-center align-bottom mb-5">{error}</div>
-            <div className="sticky bottom-0">
-              <Form
-                ref={inputRef}
-                term={term}
-                disabled={!!error}
-                onChange={onChange}
-                onSubmit={onSubmit}
-              />
-            </div>
+            <Form
+              ref={inputRef}
+              term={term}
+              disabled={!!error}
+              onChange={onChange}
+              onSubmit={onSubmit}
+            />
           </div>
         </div>
 
