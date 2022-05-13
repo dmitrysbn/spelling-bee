@@ -76,7 +76,7 @@ const App = () => {
         </div>
       </div>
 
-      <div className="container flex flex-row gap-5 mt-6">
+      <div className="container flex flex-row justify-center gap-5 mt-6">
         <LettersList
           onClick={onChange}
           onSubmit={onSubmit}

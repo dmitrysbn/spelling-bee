@@ -19,6 +19,7 @@ export const legalWords = [
   'coding',
   'geodic',
   'hoeing',
+  'ignite',
   'hogtie',
   'cogent',
   'coigne',
