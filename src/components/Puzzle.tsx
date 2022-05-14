@@ -1,21 +1,30 @@
 import LetterButton from './LetterButton';
-import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { forwardRef, Ref, useCallback, useEffect, useState } from 'react';
 import ControlButtons from './ControlButtons';
 import { randomizeLetters } from '../utils/randomizeLetters';
+import Form from './Form';
+import LettersGrid from './LettersGrid';
 
-const LettersList = ({
-  puzzle,
-  mainLetter,
-  onClick,
-  onSubmit,
-  onClickDelete,
-}: {
-  puzzle: string;
-  mainLetter: string;
-  onClick: (event: BaseSyntheticEvent, letter: string) => void;
-  onSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}) => {
+const Puzzle = (
+  {
+    term,
+    error,
+    puzzle,
+    mainLetter,
+    onChange,
+    onSubmit,
+    onClickDelete,
+  }: {
+    term: string;
+    error: string;
+    puzzle: string;
+    mainLetter: string;
+    onChange: (event: any, letter?: string) => void;
+    onSubmit: (event: any) => void;
+    onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  },
+  ref: Ref<HTMLDivElement> | undefined
+) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));
   const [loading, setLoading] = useState(false);
 
@@ -71,15 +80,25 @@ const LettersList = ({
       key={letter}
       letter={letter}
       main={letter === mainLetter}
-      onClick={onClick}
+      onClick={onChange}
     />
   ));
 
   return (
-    <div className="container flex flex-col items-center">
-      <div className="grid grid-cols-3 gap-5 mt-10 items-stretch text-center justify-items-center">
-        {lettersList}
-      </div>
+    <div className="container flex flex-col justify-center items-center">
+      <Form
+        ref={ref}
+        term={term}
+        error={error}
+        onChange={onChange}
+        onSubmit={onSubmit}
+      />
+
+      <LettersGrid
+        letters={lettersArray}
+        mainLetter={mainLetter}
+        onChange={onChange}
+      />
 
       <ControlButtons
         onRefresh={handleRefresh}
@@ -90,4 +109,4 @@ const LettersList = ({
   );
 };
 
-export default LettersList;
+export default forwardRef(Puzzle);

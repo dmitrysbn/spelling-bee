@@ -30,6 +30,7 @@ export const legalWords = [
   'nogged',
   'togged',
   'doting',
+  'digit',
   'nidget',
   'tinged',
   'tonged',

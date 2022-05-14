@@ -16,7 +16,7 @@ const FoundWords = ({ foundWords }: { foundWords: string[] }) => {
 
   return (
     <div className="container flex">
-      <div className="container flex flex-col h-full border-solid border rounded-xl">
+      <div className="container w-full h-full border rounded-xl">
         <div className="m-5 mb-0">
           You have found {foundWords.length}{' '}
           {foundWords.length === 1 ? 'word' : 'words'}

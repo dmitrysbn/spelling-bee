@@ -1,8 +1,7 @@
 import bee from './images/bee_white.png';
 import './App.css';
 import Header from './components/Header';
-import LettersList from './components/LettersList';
-import Form from './components/Form';
+import Puzzle from './components/Puzzle';
 import FoundWords from './components/FoundWords';
 import {
   BaseSyntheticEvent,
@@ -65,6 +64,8 @@ const App = () => {
 
     foundWords.push(term);
 
+    setTerm('');
+
     localStorage.setItem('foundWords', JSON.stringify(foundWords));
     setFoundWords(foundWords);
   };
@@ -98,22 +99,12 @@ const App = () => {
       <div className="flex flex-col justify-between h-screen">
         <Header />
 
-        <div className="flex justify-center h-1/6">
-          <div className="flex flex-col justify-end">
-            <div className="text-center align-bottom mb-5">{error}</div>
-            <Form
-              ref={inputRef}
-              term={term}
-              disabled={!!error}
-              onChange={onChange}
-              onSubmit={onSubmit}
-            />
-          </div>
-        </div>
-
-        <div className="container flex flex-row justify-center gap-5 mt-6">
-          <LettersList
-            onClick={onChange}
+        <div className="container align-center h-4/6 w-5/6 flex gap-5 mt-6">
+          <Puzzle
+            ref={inputRef}
+            term={term}
+            error={error}
+            onChange={onChange}
             onSubmit={onSubmit}
             onClickDelete={onClickDelete}
             puzzle={puzzle}

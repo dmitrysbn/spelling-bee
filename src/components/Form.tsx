@@ -5,12 +5,12 @@ import { BaseSyntheticEvent, forwardRef, RefObject } from 'react';
 const Form = (
   {
     term,
-    disabled,
+    error,
     onChange,
     onSubmit,
   }: {
     term: string;
-    disabled: boolean;
+    error: string;
     onChange: (event: BaseSyntheticEvent, letter?: string) => void;
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   },
@@ -21,18 +21,21 @@ const Form = (
     | undefined
 ) => {
   return (
-    <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
-      <div>
-        <TextField
-          inputRef={ref}
-          value={term}
-          onChange={onChange}
-          disabled={disabled}
-          id="standard-basic"
-          placeholder="Type or click"
-        />
+    <div className="flex justify-center h-1/6">
+      <div className="flex flex-col justify-end">
+        <div className="text-center align-bottom mb-5">{error}</div>
+        <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+          <TextField
+            inputRef={ref}
+            value={term}
+            onChange={onChange}
+            disabled={!!error}
+            id="standard-basic"
+            placeholder="Type or click"
+          />
+        </Box>
       </div>
-    </Box>
+    </div>
   );
 };
 
