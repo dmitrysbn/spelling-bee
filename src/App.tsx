@@ -1,4 +1,3 @@
-import bee from './images/bee_white.png';
 import './App.css';
 import Header from './components/Header';
 import Puzzle from './components/Puzzle';
@@ -12,6 +11,7 @@ import {
 } from 'react';
 import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
+import Footer from './components/Footer';
 
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
@@ -113,15 +113,7 @@ const App = () => {
           <FoundWords foundWords={foundWords} />
         </div>
 
-        <footer className="flex justify-center">
-          <a
-            href="https://github.com/dmitrysbn/spelling-bee"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img src={bee} alt="" width="48" height="48" />
-          </a>
-        </footer>
+        <Footer />
       </div>
     </div>
   );
