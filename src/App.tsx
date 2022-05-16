@@ -13,22 +13,26 @@ import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 import Footer from './components/Footer';
 
-const puzzle = 'HOCIGEDNT';
-const mainLetter = 'G';
-
-const storedWordsString = localStorage.getItem('foundWords');
-const storedWords = storedWordsString ? JSON.parse(storedWordsString) : [];
-
-const App = () => {
+const App = ({
+  puzzle,
+  mainLetter,
+}: {
+  puzzle: string;
+  mainLetter: string;
+}) => {
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
-  const [foundWords, setFoundWords] = useState<string[]>(storedWords);
+  // const [foundWords, setFoundWords] = useState<string[]>(storedWords);
+  const [foundWords, setFoundWords] = useState(() => {
+    const storedWordsString = localStorage.getItem('foundWords');
+    return storedWordsString ? JSON.parse(storedWordsString) : [];
+  });
 
   const inputRef = useRef(document.createElement('div'));
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
+      focusInput();
     }
   }, [error]);
 
@@ -66,7 +70,7 @@ const App = () => {
 
     setTerm('');
 
-    localStorage.setItem('foundWords', JSON.stringify(foundWords));
+    window.localStorage.setItem('foundWords', JSON.stringify(foundWords));
     setFoundWords(foundWords);
   };
 

@@ -23,7 +23,14 @@ const Form = (
   return (
     <div className="flex justify-center h-1/6">
       <div className="flex flex-col justify-end">
-        <div className="text-center align-bottom mb-5">{error}</div>
+        {error && (
+          <div
+            className="text-center align-bottom mb-5"
+            data-testid="error-box"
+          >
+            {error}
+          </div>
+        )}
         <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <TextField
             inputRef={ref}
@@ -32,6 +39,7 @@ const Form = (
             disabled={!!error}
             id="standard-basic"
             placeholder="Type or click"
+            inputProps={{ 'data-testid': 'form' }}
           />
         </Box>
       </div>

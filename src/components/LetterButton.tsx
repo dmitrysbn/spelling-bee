@@ -10,8 +10,9 @@ const LetterButton = ({
   return (
     <div
       className={`${
-        main ? 'bg-[#f7da21]' : 'bg-[#e6e6e6]'
+        main ? 'bg-[#f7da21] main-letter' : 'bg-[#e6e6e6]'
       } rounded-md border-2`}
+      data-testid={main ? 'main-letter' : ''}
     >
       <button
         className="box-border h-16 w-16 p-4"
