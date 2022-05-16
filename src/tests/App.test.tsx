@@ -116,35 +116,39 @@ describe('<App />', () => {
     it('Already found', async () => {
       const form = screen.getByRole('textbox');
 
+      // types in 'GONG' and presses enter
+      userEvent.type(form, 'GONG{enter}');
+
+      // types in 'GONG' again and presses enter
+      userEvent.type(form, 'GONG{enter}');
+
+      const error = screen.queryByText('Already found');
+      expect(error).toBeInTheDocument();
+
+      await waitForElementToBeRemoved(error, {
+        timeout: 2000,
+      });
+      expect(error).not.toBeInTheDocument();
+    });
+
+    it('Typing clears errors', () => {
+      const form = screen.getByRole('textbox');
+
       // types in 'GONG'
       userEvent.type(form, 'GONG{enter}');
 
       // types in 'GONG again'
       userEvent.type(form, 'GONG{enter}');
 
-      let error = screen.queryByText('Already found');
+      const error = screen.queryByText('Already found');
       expect(error).toBeInTheDocument();
 
-      await waitForElementToBeRemoved(screen.queryByText('Already found'), {
-        timeout: 2000,
-      });
+      userEvent.type(form, 'G');
       expect(error).not.toBeInTheDocument();
+
+      expect((form as HTMLInputElement).value).toEqual('G');
     });
   });
-
-  // describe('Submit timeout', () => {
-  //   it('Submits a word and clicks a letter', () => {
-  //     const form = screen.getByRole('textbox');
-
-  //     // types in 'GONG' and presses enter
-  //     userEvent.type(form, 'GONG{enter}');
-
-  //     userEvent.type(form, 'G');
-
-  //     const foundWord = screen.getByText('Gong');
-  //     expect(foundWord).toBeInTheDocument();
-  //   });
-  // });
 
   describe('Delete', () => {
     it('Clicks delete', () => {
