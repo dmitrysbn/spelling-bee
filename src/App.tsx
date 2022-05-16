@@ -108,6 +108,12 @@ const App = ({
   };
 
   const onClickDelete = (event: BaseSyntheticEvent): void => {
+    if (error) {
+      setTerm('');
+      setError('');
+      return;
+    }
+
     const newTerm = term.slice(0, term.length - 1);
     setTerm(newTerm.toUpperCase());
   };

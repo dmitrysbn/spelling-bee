@@ -134,16 +134,29 @@ describe('<App />', () => {
     it('Typing clears errors', () => {
       const form = screen.getByRole('textbox');
 
-      // types in 'GONG'
-      userEvent.type(form, 'GONG{enter}');
+      userEvent.type(form, 'G{enter}');
 
-      // types in 'GONG again'
-      userEvent.type(form, 'GONG{enter}');
-
-      const error = screen.queryByText('Already found');
+      const error = screen.queryByText('Too short');
       expect(error).toBeInTheDocument();
 
       userEvent.type(form, 'G');
+      expect(error).not.toBeInTheDocument();
+
+      expect((form as HTMLInputElement).value).toEqual('G');
+    });
+
+    it('Clicking letters clears errors', () => {
+      const form = screen.getByRole('textbox');
+
+      const g = screen.getByText('G');
+      userEvent.click(g);
+
+      userEvent.type(form, '{enter}');
+
+      const error = screen.queryByText('Too short');
+      expect(error).toBeInTheDocument();
+
+      userEvent.click(g);
       expect(error).not.toBeInTheDocument();
 
       expect((form as HTMLInputElement).value).toEqual('G');
