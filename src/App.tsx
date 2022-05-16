@@ -22,9 +22,10 @@ const App = ({
 }) => {
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
-  // const [foundWords, setFoundWords] = useState<string[]>(storedWords);
+  const [errorTimeout, setErrorTimeout] = useState(0);
   const [foundWords, setFoundWords] = useState(() => {
     const storedWordsString = localStorage.getItem('foundWords');
+
     return storedWordsString ? JSON.parse(storedWordsString) : [];
   });
 
@@ -49,7 +50,7 @@ const App = ({
       return;
     }
 
-    const error = validateTerm({
+    const validationError = validateTerm({
       term,
       puzzle,
       legalWords,
@@ -57,12 +58,15 @@ const App = ({
       foundWords,
     });
 
-    if (error) {
-      setError(error);
-      setTimeout(() => {
+    if (validationError) {
+      setError(validationError);
+      const timeoutId = window.setTimeout(() => {
         setError('');
         setTerm('');
       }, 1000);
+
+      setErrorTimeout(timeoutId);
+
       return;
     }
 
@@ -75,8 +79,17 @@ const App = ({
   };
 
   const onChange = (event: BaseSyntheticEvent, letter?: string) => {
+    if (error) {
+      setError('');
+      clearTimeout(errorTimeout);
+    }
+
     if (event.type === 'change') {
-      const { value } = event.target;
+      let { value } = event.target;
+
+      if (error) {
+        value = value.charAt(value.length - 1);
+      }
 
       const re = /^[A-Za-z]+$/;
 
@@ -85,11 +98,12 @@ const App = ({
       }
     } else if (event.type === 'click') {
       if (error) {
-        return;
-      }
-      const newTerm = letter ? term + letter : term;
+        setTerm(() => '' + letter);
+      } else {
+        const newTerm = letter ? term + letter : term;
 
-      setTerm(newTerm.toUpperCase());
+        setTerm(newTerm.toUpperCase());
+      }
     }
   };
 

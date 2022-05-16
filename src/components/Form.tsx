@@ -36,7 +36,6 @@ const Form = (
             inputRef={ref}
             value={term}
             onChange={onChange}
-            disabled={!!error}
             id="standard-basic"
             placeholder="Type or click"
             inputProps={{ 'data-testid': 'form' }}

@@ -1,7 +1,6 @@
 import {
   render,
   screen,
-  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -54,7 +53,7 @@ describe('<App />', () => {
   });
 
   it('Submits empty term', () => {
-    const form = screen.getByTestId('form');
+    const form = screen.getByRole('textbox');
 
     // presses enter
     userEvent.type(form, '{enter}');
@@ -64,7 +63,7 @@ describe('<App />', () => {
   });
 
   it('Types in a legal word', () => {
-    const form = screen.getByTestId('form');
+    const form = screen.getByRole('textbox');
 
     // types in 'GONG' and presses enter
     userEvent.type(form, 'GONG{enter}');
@@ -75,7 +74,7 @@ describe('<App />', () => {
 
   describe('Validation', () => {
     it('Too short', () => {
-      const form = screen.getByTestId('form');
+      const form = screen.getByRole('textbox');
 
       // types in 'GON'
       userEvent.type(form, 'GON{enter}');
@@ -85,7 +84,7 @@ describe('<App />', () => {
     });
 
     it('Bad letters', () => {
-      const form = screen.getByTestId('form');
+      const form = screen.getByRole('textbox');
 
       // types in 'LOLZ'
       userEvent.type(form, 'LOLZ{enter}');
@@ -95,7 +94,7 @@ describe('<App />', () => {
     });
 
     it('Missing center letter', () => {
-      const form = screen.getByTestId('form');
+      const form = screen.getByRole('textbox');
 
       // types in 'CENT'
       userEvent.type(form, 'CENT{enter}');
@@ -105,7 +104,7 @@ describe('<App />', () => {
     });
 
     it('Not in word list', () => {
-      const form = screen.getByTestId('form');
+      const form = screen.getByRole('textbox');
 
       // types in 'GONGING'
       userEvent.type(form, 'GONGING{enter}');
@@ -115,7 +114,7 @@ describe('<App />', () => {
     });
 
     it('Already found', async () => {
-      const form = screen.getByTestId('form');
+      const form = screen.getByRole('textbox');
 
       // types in 'GONG'
       userEvent.type(form, 'GONG{enter}');
@@ -126,8 +125,50 @@ describe('<App />', () => {
       let error = screen.queryByText('Already found');
       expect(error).toBeInTheDocument();
 
-      await waitForElementToBeRemoved(screen.queryByText('Already found'));
+      await waitForElementToBeRemoved(screen.queryByText('Already found'), {
+        timeout: 2000,
+      });
       expect(error).not.toBeInTheDocument();
+    });
+  });
+
+  // describe('Submit timeout', () => {
+  //   it('Submits a word and clicks a letter', () => {
+  //     const form = screen.getByRole('textbox');
+
+  //     // types in 'GONG' and presses enter
+  //     userEvent.type(form, 'GONG{enter}');
+
+  //     userEvent.type(form, 'G');
+
+  //     const foundWord = screen.getByText('Gong');
+  //     expect(foundWord).toBeInTheDocument();
+  //   });
+  // });
+
+  describe('Delete', () => {
+    it('Clicks delete', () => {
+      const form = screen.getByRole('textbox');
+
+      userEvent.type(form, 'G');
+
+      expect((form as HTMLInputElement).value).toEqual('G');
+
+      userEvent.click(screen.getByRole('button', { name: 'Delete' }));
+
+      expect((form as HTMLInputElement).value).toEqual('');
+    });
+
+    it('Presses delete', () => {
+      const form = screen.getByRole('textbox');
+
+      userEvent.type(form, 'G');
+
+      expect((form as HTMLInputElement).value).toEqual('G');
+
+      userEvent.type(form, '{backspace}');
+
+      expect((form as HTMLInputElement).value).toEqual('');
     });
   });
 });
