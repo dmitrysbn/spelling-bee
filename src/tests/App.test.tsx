@@ -1,4 +1,5 @@
 import {
+  getAllByRole,
   render,
   screen,
   waitForElementToBeRemoved,
@@ -214,6 +215,29 @@ describe('<App />', () => {
       userEvent.type(form, '{backspace}');
 
       expect((form as HTMLInputElement).value).toEqual('');
+    });
+  });
+
+  describe('Refresh', () => {
+    it('Clicking refresh button randomizes letters', () => {
+      const initialButtons = screen.getAllByRole('button', { name: /letter/ });
+
+      userEvent.click(screen.getByRole('button', { name: /refresh/ }));
+
+      const finalButtons = screen.getAllByRole('button', { name: /letter/ });
+
+      expect(initialButtons).not.toEqual(finalButtons);
+    });
+
+    it('Pressing spacebar randomizes letters', () => {
+      const initialButtons = screen.getAllByRole('button', { name: /letter/ });
+
+      const form = screen.getByRole('textbox');
+      userEvent.type(form, '{space}');
+
+      const finalButtons = screen.getAllByRole('button', { name: /letter/ });
+
+      expect(initialButtons).not.toEqual(finalButtons);
     });
   });
 });

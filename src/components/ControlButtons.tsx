@@ -27,6 +27,7 @@ const ControlButtons = ({
           variant="outlined"
           sx={{ fontWeight: 'normal' }}
           onClick={onRefresh}
+          aria-label="refresh"
         >
           <img src={refresh} alt="" width="26" />
         </Button>
