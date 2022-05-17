@@ -1,6 +1,12 @@
 import WordItem from './WordItem';
 
-const FoundWords = ({ foundWords }: { foundWords: string[] }) => {
+const Results = ({
+  score,
+  foundWords,
+}: {
+  score: number;
+  foundWords: string[];
+}) => {
   const foundWordList = (
     <ul>
       {foundWords.map(word => {
@@ -15,7 +21,8 @@ const FoundWords = ({ foundWords }: { foundWords: string[] }) => {
   );
 
   return (
-    <div className="container flex">
+    <div className="container flex flex-col">
+      <div>Score: {score}</div>
       <div className="container w-full h-full border rounded-xl">
         <div className="m-5 mb-0">
           You have found {foundWords.length}{' '}
@@ -27,4 +34,4 @@ const FoundWords = ({ foundWords }: { foundWords: string[] }) => {
   );
 };
 
-export default FoundWords;
+export default Results;

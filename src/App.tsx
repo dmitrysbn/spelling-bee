@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './components/Header';
 import Puzzle from './components/Puzzle';
-import FoundWords from './components/FoundWords';
+import Results from './components/Results';
 import {
   BaseSyntheticEvent,
   FormEvent,
@@ -23,6 +23,11 @@ const App = ({
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
   const [errorTimeout, setErrorTimeout] = useState(0);
+  const [score, setScore] = useState(() => {
+    const storedScoreString = localStorage.getItem('score');
+
+    return storedScoreString ? parseInt(storedScoreString) : 0;
+  });
   const [foundWords, setFoundWords] = useState(() => {
     const storedWordsString = localStorage.getItem('foundWords');
 
@@ -71,16 +76,20 @@ const App = ({
     }
 
     foundWords.push(term);
+    const newScore = score + term.length;
 
     setTerm('');
+    setScore(newScore);
 
     window.localStorage.setItem('foundWords', JSON.stringify(foundWords));
+    window.localStorage.setItem('score', newScore.toString());
     setFoundWords(foundWords);
   };
 
+  // TODO: fix any type
   const onChange = (event: any, letter?: string) => {
+    // if pressed Space
     if (event.nativeEvent.data === ' ') {
-      // if pressed Space
       return;
     }
 
@@ -148,7 +157,7 @@ const App = ({
             onClickDelete={onClickDelete}
             onPressDelete={handleDeletePressError}
           />
-          <FoundWords foundWords={foundWords} />
+          <Results score={score} foundWords={foundWords} />
         </div>
 
         <Footer />
