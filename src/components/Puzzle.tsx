@@ -33,17 +33,6 @@ const Puzzle = (
   const handlePressSpace = useCallback(
     (e: KeyboardEvent) => {
       if (e.code === 'Space') {
-        // if (loading) {
-        //   return;
-        // }
-        // console.log('space');
-
-        // setLoading(true);
-
-        // setTimeout(() => {
-        //   setLoading(false);
-        // }, 1000);
-
         setLettersArray(prevArray => randomizeLetters(prevArray, mainLetter));
       }
     },

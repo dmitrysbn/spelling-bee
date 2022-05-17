@@ -78,7 +78,12 @@ const App = ({
     setFoundWords(foundWords);
   };
 
-  const onChange = (event: BaseSyntheticEvent, letter?: string) => {
+  const onChange = (event: any, letter?: string) => {
+    if (event.nativeEvent.data === ' ') {
+      // if pressed Space
+      return;
+    }
+
     if (error) {
       setError('');
       clearTimeout(errorTimeout);
