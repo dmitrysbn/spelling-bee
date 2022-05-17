@@ -107,6 +107,14 @@ const App = ({
     }
   };
 
+  const handleDeletePressError = ({ nativeEvent }: { nativeEvent: any }) => {
+    if (error && nativeEvent.key === 'Backspace') {
+      setTerm('');
+      setError('');
+      clearTimeout(errorTimeout);
+    }
+  };
+
   const onClickDelete = (event: BaseSyntheticEvent): void => {
     if (error) {
       setTerm('');
@@ -128,11 +136,12 @@ const App = ({
             ref={inputRef}
             term={term}
             error={error}
+            puzzle={puzzle}
+            mainLetter={mainLetter}
             onChange={onChange}
             onSubmit={onSubmit}
             onClickDelete={onClickDelete}
-            puzzle={puzzle}
-            mainLetter={mainLetter}
+            onPressDelete={handleDeletePressError}
           />
           <FoundWords foundWords={foundWords} />
         </div>

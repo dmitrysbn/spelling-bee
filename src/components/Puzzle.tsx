@@ -13,6 +13,7 @@ const Puzzle = (
     onChange,
     onSubmit,
     onClickDelete,
+    onPressDelete,
   }: {
     term: string;
     error: string;
@@ -21,6 +22,7 @@ const Puzzle = (
     onChange: (event: any, letter?: string) => void;
     onSubmit: (event: any) => void;
     onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    onPressDelete: (event: any) => void;
   },
   ref: Ref<HTMLDivElement> | undefined
 ) => {
@@ -82,6 +84,7 @@ const Puzzle = (
         error={error}
         onChange={onChange}
         onSubmit={onSubmit}
+        onPressDelete={onPressDelete}
       />
 
       <LettersGrid

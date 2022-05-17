@@ -8,11 +8,13 @@ const Form = (
     error,
     onChange,
     onSubmit,
+    onPressDelete,
   }: {
     term: string;
     error: string;
     onChange: (event: BaseSyntheticEvent, letter?: string) => void;
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    onPressDelete: (event: any) => void;
   },
   ref:
     | ((instance: HTMLDivElement | null) => void)
@@ -39,6 +41,7 @@ const Form = (
             id="standard-basic"
             placeholder="Type or click"
             inputProps={{ 'data-testid': 'form' }}
+            onKeyDown={onPressDelete}
           />
         </Box>
       </div>
