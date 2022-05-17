@@ -72,7 +72,7 @@ describe('<App />', () => {
     expect(foundWord).toBeInTheDocument();
   });
 
-  describe('Validation', () => {
+  describe('Validation errors', () => {
     it('Too short', () => {
       const form = screen.getByRole('textbox');
 
@@ -131,40 +131,68 @@ describe('<App />', () => {
       expect(error).not.toBeInTheDocument();
     });
 
-    it('Typing clears errors', () => {
-      const form = screen.getByRole('textbox');
+    describe('Clearing errors', () => {
+      it('Typing clears errors', () => {
+        const form = screen.getByRole('textbox');
 
-      userEvent.type(form, 'G{enter}');
+        userEvent.type(form, 'G{enter}');
 
-      const error = screen.queryByText('Too short');
-      expect(error).toBeInTheDocument();
+        const error = screen.queryByText('Too short');
+        expect(error).toBeInTheDocument();
 
-      userEvent.type(form, 'G');
-      expect(error).not.toBeInTheDocument();
+        userEvent.type(form, 'G');
+        expect(error).not.toBeInTheDocument();
 
-      expect((form as HTMLInputElement).value).toEqual('G');
-    });
+        expect((form as HTMLInputElement).value).toEqual('G');
+      });
 
-    it('Clicking letters clears errors', () => {
-      const form = screen.getByRole('textbox');
+      it('Clicking letters clears errors', () => {
+        const form = screen.getByRole('textbox');
 
-      const g = screen.getByText('G');
-      userEvent.click(g);
+        const g = screen.getByText('G');
+        userEvent.click(g);
 
-      userEvent.type(form, '{enter}');
+        userEvent.type(form, '{enter}');
 
-      const error = screen.queryByText('Too short');
-      expect(error).toBeInTheDocument();
+        const error = screen.queryByText('Too short');
+        expect(error).toBeInTheDocument();
 
-      userEvent.click(g);
-      expect(error).not.toBeInTheDocument();
+        userEvent.click(g);
+        expect(error).not.toBeInTheDocument();
 
-      expect((form as HTMLInputElement).value).toEqual('G');
+        expect((form as HTMLInputElement).value).toEqual('G');
+      });
+
+      it('Clicking delete clears errors', () => {
+        const form = screen.getByRole('textbox');
+        userEvent.type(form, 'G{enter}');
+
+        const error = screen.queryByText('Too short');
+        expect(error).toBeInTheDocument();
+
+        userEvent.type(form, '{backspace}');
+        expect(error).not.toBeInTheDocument();
+
+        expect((form as HTMLInputElement).value).toEqual('');
+      });
+
+      it('Pressing delete clears errors', () => {
+        const form = screen.getByRole('textbox');
+        userEvent.type(form, 'G{enter}');
+
+        const error = screen.queryByText('Too short');
+        expect(error).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button', { name: 'Delete' }));
+        expect(error).not.toBeInTheDocument();
+
+        expect((form as HTMLInputElement).value).toEqual('');
+      });
     });
   });
 
   describe('Delete', () => {
-    it('Clicks delete', () => {
+    it('Clicking delete button removes last character', () => {
       const form = screen.getByRole('textbox');
 
       userEvent.type(form, 'G');
@@ -176,7 +204,7 @@ describe('<App />', () => {
       expect((form as HTMLInputElement).value).toEqual('');
     });
 
-    it('Presses delete', () => {
+    it('Pressing delete key removes last character', () => {
       const form = screen.getByRole('textbox');
 
       userEvent.type(form, 'G');
