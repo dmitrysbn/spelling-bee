@@ -9,7 +9,7 @@ const Results = ({
 }) => {
   return (
     <div className="container flex flex-col">
-      <div>Score: {score}</div>
+      <div className="m-5 font-extrabold text-xl">Score: {score}</div>
       <FoundWords foundWords={foundWords} />
     </div>
   );
