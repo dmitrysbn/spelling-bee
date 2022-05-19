@@ -4,6 +4,17 @@ import { randomizeLetters } from '../utils/randomizeLetters';
 import Form from './Form';
 import LettersGrid from './LettersGrid';
 
+type PuzzleProps = {
+  term: string;
+  error: string;
+  puzzle: string;
+  mainLetter: string;
+  onChange: (event: any, letter?: string) => void;
+  onSubmit: (event: any) => void;
+  onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onPressDelete: (event: any) => void;
+};
+
 const Puzzle = (
   {
     term,
@@ -14,16 +25,7 @@ const Puzzle = (
     onSubmit,
     onClickDelete,
     onPressDelete,
-  }: {
-    term: string;
-    error: string;
-    puzzle: string;
-    mainLetter: string;
-    onChange: (event: any, letter?: string) => void;
-    onSubmit: (event: any) => void;
-    onClickDelete: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    onPressDelete: (event: any) => void;
-  },
+  }: PuzzleProps,
   ref: Ref<HTMLDivElement> | undefined
 ) => {
   const [lettersArray, setLettersArray] = useState(puzzle.split(''));

@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 const theme = createTheme({
   palette: {
@@ -16,7 +17,6 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Libre Franklin',
-    // fontWeightBold: '900',
   },
 });
 
@@ -26,6 +26,15 @@ const mainLetter = 'G';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+(async function getCurrentPuzzleId() {
+  const { data } = await axios.get(
+    'http://localhost:1337/puzzles/current_puzzle'
+  );
+
+  const { puzzleId } = data;
+})();
+
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
