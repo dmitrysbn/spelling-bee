@@ -182,6 +182,8 @@ const App = ({
     setTerm(newTerm.toUpperCase());
   };
 
+  const foundWords = JSON.parse(score.words).sort();
+
   return (
     <div className="w-screen" onClick={focusInput}>
       <div className="flex flex-col justify-between h-screen">
@@ -199,7 +201,7 @@ const App = ({
             onClickDelete={onClickDelete}
             onPressDelete={handleDeletePressError}
           />
-          <Results score={score.points} foundWords={JSON.parse(score.words)} />
+          <Results score={score.points} foundWords={foundWords} />
         </div>
 
         <Footer />
