@@ -4,17 +4,28 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import moxios from 'moxios';
 import App from '../App';
+
+const puzzle = 'HOCIGEDNT';
+const mainLetter = 'G';
 
 describe('<App />', () => {
   beforeEach(() => {
     localStorage.clear();
+    moxios.install();
 
     render(<App puzzle={puzzle} mainLetter={mainLetter} />);
+
+    moxios.stubRequest('localhost:1337/puzzles/current_puzzle', {
+      status: 200,
+      response: { puzzleId: '20-05-2022' },
+    });
   });
 
-  const puzzle = 'HOCIGEDNT';
-  const mainLetter = 'G';
+  afterEach(function () {
+    moxios.uninstall();
+  });
 
   it('renders the App page', () => {
     const title = screen.getByText('Spelling Bee :)');
