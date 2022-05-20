@@ -12,7 +12,11 @@ import {
 import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 import Footer from './components/Footer';
-import { getCurrentPuzzleId } from './repository/repository';
+import {
+  getCurrentPuzzleId,
+  getScore,
+  validateWord,
+} from './repository/repository';
 
 const App = ({
   puzzle,
@@ -40,7 +44,11 @@ const App = ({
 
   useEffect(() => {
     getCurrentPuzzleId(setPuzzleId);
-  }, []);
+
+    if (puzzleId) {
+      getScore({ userId: 'dmitry', puzzleId });
+    }
+  }, [puzzleId]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -80,6 +88,8 @@ const App = ({
 
       return;
     }
+
+    // const isValid = validateWord(term, puzzleId);
 
     foundWords.push(term);
     const newScore = score + term.length;

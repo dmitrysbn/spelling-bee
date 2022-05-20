@@ -27,9 +27,9 @@ export const validateTerm = ({
     return 'Missing center letter';
   }
 
-  if (!legalWords.includes(term.toLowerCase())) {
-    return 'Not in word list';
-  }
+  // if (!legalWords.includes(term.toLowerCase())) {
+  //   return 'Not in word list';
+  // }
 
   if (foundWords.includes(term)) {
     return 'Already found';

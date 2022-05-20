@@ -22,7 +22,7 @@ const theme = createTheme({
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
 
-export const UserContext = createContext<string | null>('dmitry1');
+export const UserContext = createContext<string | null>('dmitry');
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -30,7 +30,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <UserContext.Provider value="dmitry1">
+    <UserContext.Provider value="dmitry">
       <ThemeProvider theme={theme}>
         <App puzzle={puzzle} mainLetter={mainLetter} />
       </ThemeProvider>
