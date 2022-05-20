@@ -44,6 +44,26 @@ export const getScore = async ({
   return data;
 };
 
+export const updateScore = async ({
+  scoreId,
+  userId,
+  puzzleId,
+  word,
+}: {
+  scoreId: string;
+  userId: string;
+  puzzleId: string;
+  word: string;
+}) => {
+  const { data } = await axios.patch(`${BEE_SERVICE_URL}/scores/${scoreId}`, {
+    userId,
+    puzzleId,
+    word,
+  });
+
+  return data;
+};
+
 export const validateWord = async (word: string, puzzleId: string) => {
   const { data } = await axios.post(
     `${BEE_SERVICE_URL}/puzzles/${puzzleId}/validate`,

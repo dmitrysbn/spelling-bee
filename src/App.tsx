@@ -16,8 +16,14 @@ import {
   createScore,
   getCurrentPuzzleId,
   getScore,
-  validateWord,
+  updateScore,
 } from './repository/repository';
+
+type Score = {
+  id: string;
+  words: string;
+  points: number;
+};
 
 const App = ({
   puzzle,
@@ -27,21 +33,15 @@ const App = ({
   mainLetter: string;
 }) => {
   const [puzzleId, setPuzzleId] = useState('');
-  const [beScore, setBeScore] = useState({});
+  const [score, setScore] = useState<Score>({
+    id: '0',
+    words: '[]',
+    points: 0,
+  });
 
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
   const [errorTimeout, setErrorTimeout] = useState(0);
-  const [score, setScore] = useState(() => {
-    const storedScoreString = localStorage.getItem('score');
-
-    return storedScoreString ? parseInt(storedScoreString) : 0;
-  });
-  const [foundWords, setFoundWords] = useState(() => {
-    const storedWordsString = localStorage.getItem('foundWords');
-
-    return storedWordsString ? JSON.parse(storedWordsString) : [];
-  });
 
   const inputRef = useRef(document.createElement('div'));
 
@@ -61,18 +61,16 @@ const App = ({
         const existingScore = await getScore({ userId, puzzleId });
 
         if (existingScore) {
-          setBeScore(existingScore);
+          setScore(existingScore);
         } else {
           const newScore = await createScore({ userId, puzzleId });
-          setBeScore(newScore);
+          setScore(newScore);
         }
       }
     };
 
     getOrCreateScore({ userId: 'dmitry', puzzleId });
   }, [puzzleId]);
-
-  console.log(beScore);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -84,7 +82,7 @@ const App = ({
     inputRef.current.focus();
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
@@ -93,13 +91,29 @@ const App = ({
       return;
     }
 
-    const validationError = validateTerm({
+    let validationError = validateTerm({
       term,
       puzzle,
       legalWords,
       mainLetter,
-      foundWords,
+      foundWords: JSON.parse(score.words),
     });
+
+    if (!validationError) {
+      const updatedScore = await updateScore({
+        scoreId: score.id,
+        userId: 'dmitry',
+        puzzleId,
+        word: term,
+      });
+
+      if (updatedScore.points === score.points) {
+        validationError = 'Not in word list';
+      } else {
+        setScore(updatedScore);
+        setTerm('');
+      }
+    }
 
     if (validationError) {
       setError(validationError);
@@ -112,18 +126,6 @@ const App = ({
 
       return;
     }
-
-    const isValid = validateWord(term, puzzleId);
-
-    foundWords.push(term);
-    const newScore = score + term.length;
-
-    setTerm('');
-    setScore(newScore);
-
-    window.localStorage.setItem('foundWords', JSON.stringify(foundWords));
-    window.localStorage.setItem('score', newScore.toString());
-    setFoundWords(foundWords);
   };
 
   // TODO: fix any type
@@ -197,7 +199,7 @@ const App = ({
             onClickDelete={onClickDelete}
             onPressDelete={handleDeletePressError}
           />
-          <Results score={score} foundWords={foundWords} />
+          <Results score={score.points} foundWords={JSON.parse(score.words)} />
         </div>
 
         <Footer />
