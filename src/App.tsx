@@ -12,6 +12,7 @@ import {
 import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 import Footer from './components/Footer';
+import { getCurrentPuzzleId } from './repository/repository';
 
 const App = ({
   puzzle,
@@ -20,6 +21,7 @@ const App = ({
   puzzle: string;
   mainLetter: string;
 }) => {
+  const [puzzleId, setPuzzleId] = useState('');
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
   const [errorTimeout, setErrorTimeout] = useState(0);
@@ -35,6 +37,10 @@ const App = ({
   });
 
   const inputRef = useRef(document.createElement('div'));
+
+  useEffect(() => {
+    getCurrentPuzzleId(setPuzzleId);
+  }, []);
 
   useEffect(() => {
     if (inputRef.current) {

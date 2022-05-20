@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
 
 const theme = createTheme({
   palette: {
@@ -23,23 +22,19 @@ const theme = createTheme({
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
 
+export const UserContext = createContext<string | null>('dmitry1');
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-(async function getCurrentPuzzleId() {
-  const { data } = await axios.get(
-    'http://localhost:1337/puzzles/current_puzzle'
-  );
-
-  const { puzzleId } = data;
-})();
-
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App puzzle={puzzle} mainLetter={mainLetter} />
-    </ThemeProvider>
+    <UserContext.Provider value="dmitry1">
+      <ThemeProvider theme={theme}>
+        <App puzzle={puzzle} mainLetter={mainLetter} />
+      </ThemeProvider>
+    </UserContext.Provider>
   </React.StrictMode>
 );
 

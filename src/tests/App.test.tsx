@@ -1,5 +1,4 @@
 import {
-  getAllByRole,
   render,
   screen,
   waitForElementToBeRemoved,
