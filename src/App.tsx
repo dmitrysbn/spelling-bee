@@ -13,6 +13,7 @@ import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 import Footer from './components/Footer';
 import {
+  createScore,
   getCurrentPuzzleId,
   getScore,
   validateWord,
@@ -26,6 +27,8 @@ const App = ({
   mainLetter: string;
 }) => {
   const [puzzleId, setPuzzleId] = useState('');
+  const [beScore, setBeScore] = useState({});
+
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
   const [errorTimeout, setErrorTimeout] = useState(0);
@@ -44,11 +47,32 @@ const App = ({
 
   useEffect(() => {
     getCurrentPuzzleId(setPuzzleId);
+  }, []);
 
-    if (puzzleId) {
-      getScore({ userId: 'dmitry', puzzleId });
-    }
+  useEffect(() => {
+    const getOrCreateScore = async ({
+      userId,
+      puzzleId,
+    }: {
+      userId: string;
+      puzzleId: string;
+    }) => {
+      if (puzzleId) {
+        const existingScore = await getScore({ userId, puzzleId });
+
+        if (existingScore) {
+          setBeScore(existingScore);
+        } else {
+          const newScore = await createScore({ userId, puzzleId });
+          setBeScore(newScore);
+        }
+      }
+    };
+
+    getOrCreateScore({ userId: 'dmitry', puzzleId });
   }, [puzzleId]);
+
+  console.log(beScore);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -89,7 +113,7 @@ const App = ({
       return;
     }
 
-    // const isValid = validateWord(term, puzzleId);
+    const isValid = validateWord(term, puzzleId);
 
     foundWords.push(term);
     const newScore = score + term.length;

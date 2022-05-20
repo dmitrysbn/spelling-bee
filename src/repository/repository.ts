@@ -12,6 +12,21 @@ export const getCurrentPuzzleId = async (setPuzzleId: {
   setPuzzleId(data.puzzleId);
 };
 
+export const createScore = async ({
+  userId,
+  puzzleId,
+}: {
+  userId: string;
+  puzzleId: string;
+}) => {
+  const { data } = await axios.post(`${BEE_SERVICE_URL}/scores`, {
+    userId,
+    puzzleId,
+  });
+
+  return data;
+};
+
 export const getScore = async ({
   userId,
   puzzleId,
