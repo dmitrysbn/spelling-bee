@@ -63,14 +63,3 @@ export const updateScore = async ({
 
   return data;
 };
-
-export const validateWord = async (word: string, puzzleId: string) => {
-  const { data } = await axios.post(
-    `${BEE_SERVICE_URL}/puzzles/${puzzleId}/validate`,
-    {
-      params: {
-        word,
-      },
-    }
-  );
-};
