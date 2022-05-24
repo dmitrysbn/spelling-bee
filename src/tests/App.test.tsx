@@ -1,30 +1,48 @@
 import {
+  act,
   render,
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import moxios from 'moxios';
+import { createRoot } from 'react-dom/client';
 import App from '../App';
 
 const puzzle = 'HOCIGEDNT';
 const mainLetter = 'G';
+const score = {
+  id: '0',
+  points: 4,
+  words: '["GONG"]',
+  complete: false,
+  userId: 'dmitry',
+  puzzleId: '0c84d2f3-5d71-4b77-be8a-54c932610d48',
+  createdAt: '2022-05-20T20:31:52.440Z',
+};
 
 describe('<App />', () => {
   beforeEach(() => {
-    localStorage.clear();
     moxios.install();
 
-    render(<App puzzle={puzzle} mainLetter={mainLetter} />);
+    const container = document.createElement('div');
+    document.body.appendChild(container);
 
-    moxios.stubRequest('localhost:1337/puzzles/current_puzzle', {
-      status: 200,
-      response: { puzzleId: '20-05-2022' },
+    act(() => {
+      createRoot(container).render(
+        <App puzzle={puzzle} mainLetter={mainLetter} />
+      );
+
+      moxios.stubRequest('localhost:1337/puzzles/current_puzzle', {
+        status: 200,
+        response: { puzzleId: '0c84d2f3-5d71-4b77-be8a-54c932610d48' },
+      });
     });
   });
 
   afterEach(function () {
     moxios.uninstall();
+    document.getElementsByTagName('body')[0].innerHTML = '';
   });
 
   it('renders the App page', () => {
@@ -35,7 +53,7 @@ describe('<App />', () => {
     expect(wordsFound).toBeInTheDocument();
   });
 
-  it('Clicks in a legal word', () => {
+  it('Clicks in a legal word', async () => {
     const g = screen.getByText('G');
     const o = screen.getByText('O');
     const n = screen.getByText('N');
@@ -56,6 +74,13 @@ describe('<App />', () => {
     const enterButton = screen.getByText('Enter');
     userEvent.click(enterButton);
 
+    await act(async () => {
+      moxios.requests.mostRecent().respondWith({
+        status: 200,
+        response: score,
+      });
+    });
+
     const error = screen.queryByText('Already found');
     expect(error).not.toBeInTheDocument();
 
@@ -73,11 +98,18 @@ describe('<App />', () => {
     expect(error).not.toBeInTheDocument();
   });
 
-  it('Types in a legal word', () => {
+  it('Types in a legal word', async () => {
     const form = screen.getByRole('textbox');
 
-    // types in 'GONG' and presses enter
-    userEvent.type(form, 'GONG{enter}');
+    await act(async () => {
+      // types in 'GONG' and presses enter
+      userEvent.type(form, 'GONG{enter}');
+
+      await moxios.requests.mostRecent().respondWith({
+        status: 200,
+        response: score,
+      });
+    });
 
     const foundWord = screen.getByText('Gong');
     expect(foundWord).toBeInTheDocument();
@@ -114,11 +146,18 @@ describe('<App />', () => {
       expect(error).toBeInTheDocument();
     });
 
-    it('Not in word list', () => {
+    it('Not in word list', async () => {
       const form = screen.getByRole('textbox');
 
-      // types in 'GONGING'
-      userEvent.type(form, 'GONGING{enter}');
+      await act(async () => {
+        // types in 'GONGING'
+        userEvent.type(form, 'GONGING{enter}');
+
+        await moxios.requests.mostRecent().respondWith({
+          status: 200,
+          response: { ...score, points: 0 },
+        });
+      });
 
       const error = screen.queryByText('Not in word list');
       expect(error).toBeInTheDocument();
@@ -127,8 +166,15 @@ describe('<App />', () => {
     it('Already found', async () => {
       const form = screen.getByRole('textbox');
 
-      // types in 'GONG' and presses enter
-      userEvent.type(form, 'GONG{enter}');
+      await act(async () => {
+        // types in 'GONG' and presses enter
+        userEvent.type(form, 'GONG{enter}');
+
+        await moxios.requests.mostRecent().respondWith({
+          status: 200,
+          response: score,
+        });
+      });
 
       // types in 'GONG' again and presses enter
       userEvent.type(form, 'GONG{enter}');
