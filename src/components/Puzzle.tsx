@@ -7,7 +7,7 @@ import LettersGrid from './LettersGrid';
 type PuzzleProps = {
   term: string;
   error: string;
-  puzzle: string;
+  letters: string;
   mainLetter: string;
   onChange: (event: any, letter?: string) => void;
   onSubmit: (event: any) => void;
@@ -19,7 +19,7 @@ const Puzzle = (
   {
     term,
     error,
-    puzzle,
+    letters,
     mainLetter,
     onChange,
     onSubmit,
@@ -28,7 +28,7 @@ const Puzzle = (
   }: PuzzleProps,
   ref: Ref<HTMLDivElement> | undefined
 ) => {
-  const [lettersArray, setLettersArray] = useState(puzzle.split(''));
+  const [lettersArray, setLettersArray] = useState(letters.split(''));
   const [loading, setLoading] = useState(false);
 
   // TODO: disable functionality of press space for 1 second
@@ -44,13 +44,13 @@ const Puzzle = (
   useEffect(() => {
     document.addEventListener('keydown', handlePressSpace);
 
-    const sorted = randomizeLetters(puzzle.split(''), mainLetter);
+    const sorted = randomizeLetters(letters.split(''), mainLetter);
     setLettersArray(sorted);
 
     return () => {
       document.removeEventListener('keydown', handlePressSpace);
     };
-  }, [handlePressSpace, puzzle, mainLetter]);
+  }, [handlePressSpace, letters, mainLetter]);
 
   // TODO: make sure no letters are in their old positions
   const handleRefresh = () => {

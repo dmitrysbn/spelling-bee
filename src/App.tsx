@@ -188,7 +188,7 @@ const App = () => {
             ref={inputRef}
             term={term}
             error={error}
-            puzzle={letters}
+            letters={letters}
             mainLetter={mainLetter}
             onChange={onChange}
             onSubmit={onSubmit}
