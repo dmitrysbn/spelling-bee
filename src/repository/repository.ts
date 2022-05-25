@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SetStateAction } from 'react';
 
-const BEE_SERVICE_URL = 'http://localhost:1337';
+const BEE_SERVICE_URL = 'https://spelling-bee-service.herokuapp.com';
 
 export const getCurrentPuzzle = async (
   setPuzzleId: {

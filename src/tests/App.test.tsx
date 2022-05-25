@@ -26,14 +26,17 @@ describe('<App />', () => {
     await act(async () => {
       createRoot(container).render(<App />);
 
-      moxios.stubRequest('http://localhost:1337/puzzles/current_puzzle', {
-        status: 200,
-        response: {
-          id: '0c84d2f3-5d71-4b77-be8a-54c932610d48',
-          letters,
-          mainLetter,
-        },
-      });
+      moxios.stubRequest(
+        'https://spelling-bee-service.herokuapp.com/puzzles/current_puzzle',
+        {
+          status: 200,
+          response: {
+            id: '0c84d2f3-5d71-4b77-be8a-54c932610d48',
+            letters,
+            mainLetter,
+          },
+        }
+      );
     });
   });
 
