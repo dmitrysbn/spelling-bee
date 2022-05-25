@@ -9,12 +9,11 @@ import {
   useRef,
   useState,
 } from 'react';
-import { legalWords } from './utils/legalWords';
 import { validateTerm } from './utils/validateTerm';
 import Footer from './components/Footer';
 import {
   createScore,
-  getCurrentPuzzleId,
+  getCurrentPuzzle,
   getScore,
   updateScore,
 } from './repository/repository';
@@ -25,14 +24,10 @@ type Score = {
   points: number;
 };
 
-const App = ({
-  puzzle,
-  mainLetter,
-}: {
-  puzzle: string;
-  mainLetter: string;
-}) => {
+const App = () => {
   const [puzzleId, setPuzzleId] = useState('');
+  const [letters, setLetters] = useState('');
+  const [mainLetter, setMainLetter] = useState('');
   const [score, setScore] = useState<Score>({
     id: '0',
     words: '[]',
@@ -46,7 +41,7 @@ const App = ({
   const inputRef = useRef(document.createElement('div'));
 
   useEffect(() => {
-    getCurrentPuzzleId(setPuzzleId);
+    getCurrentPuzzle(setPuzzleId, setLetters, setMainLetter);
   }, []);
 
   useEffect(() => {
@@ -93,8 +88,7 @@ const App = ({
 
     let validationError = validateTerm({
       term,
-      puzzle,
-      legalWords,
+      letters,
       mainLetter,
       foundWords: JSON.parse(score.words),
     });
@@ -194,7 +188,7 @@ const App = ({
             ref={inputRef}
             term={term}
             error={error}
-            puzzle={puzzle}
+            puzzle={letters}
             mainLetter={mainLetter}
             onChange={onChange}
             onSubmit={onSubmit}

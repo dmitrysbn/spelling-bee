@@ -1,18 +1,17 @@
 export const validateTerm = ({
   term,
-  puzzle,
+  letters,
   mainLetter,
   foundWords,
 }: {
   term: string;
-  puzzle: string;
-  legalWords: string[];
+  letters: string;
   mainLetter: string;
   foundWords: string[];
 }): string => {
   const containsLegalLetters = term
     .split('')
-    .every(letter => puzzle.includes(letter));
+    .every(letter => letters.includes(letter));
 
   if (term && term.length < 4) {
     return 'Too short';
